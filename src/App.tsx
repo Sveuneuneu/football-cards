@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
       </header>
+      <main>
+        <div>
+          Nav bar here
+          TODO: logo + login/logout
+        </div>
+        <div>
+          main display here
+          <div>
+            on default
+            <div>
+              Player display here
+              <div>
+                search and filter tools here
+              </div>
+              <div>
+                cards display here
+              </div>
+            </div>
+            on card click
+            <div>
+              Bigger card for update purpose
+            </div>
+          </div>
+        </div>
+        <div>
+          Footer here
+        </div>
+      </main>
     </div>
   );
 }
