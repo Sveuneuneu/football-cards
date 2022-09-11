@@ -1,11 +1,21 @@
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import { playerAdded } from './store/players';
 
 function App() {
+
+  const players = useSelector((state: any) => state.players)
+  const dispatch = useDispatch()
+
   return (
     <div className="App">
       <header>
       </header>
       <main>
+        <div>
+          { JSON.stringify(players) }
+        </div>
+        <button onClick={() => dispatch(playerAdded())}>add</button>
         <div>
           Nav bar here
           TODO: logo + login/logout
