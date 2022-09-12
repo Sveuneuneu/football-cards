@@ -2,9 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IPlayer } from "../interfaces/player";
 import { MOCK_PLAYER_DATA_DIMITRI_PAYET } from "../mocks/player";
 
+export const INDEX_NOT_FOUND_ERROR_MESSAGE = 'Cannot find the player index'
+
+export const INITIAL_STATE: IPlayer[] = []
+
 const playersSlice = createSlice({
     name: "players",
-    initialState: [] as IPlayer[],
+    initialState: INITIAL_STATE,
     reducers: {
         playerAdded(state) {
 
@@ -45,7 +49,7 @@ const findPlayerIndex = (player: IPlayer, playerList: IPlayer[]) => {
         return player.id === id
     })
     if (index === -1) {
-        throw new Error('Cannot find the player index')
+        throw new Error(INDEX_NOT_FOUND_ERROR_MESSAGE)
     }
     return index
 }
