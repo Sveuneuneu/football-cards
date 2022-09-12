@@ -11,3 +11,7 @@ export const MOCK_CLUB_OL: IClub = {
 export const MOCK_CLUB_WHU: IClub = {
     name: "West Ham United"
 }
+
+export const MOCK_CLUB_SKM: IClub = {
+    name: "Spartak Moscou"
+}

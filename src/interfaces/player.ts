@@ -3,14 +3,14 @@ import { IClub } from "./club"
 export interface IPlayer {
     firstname: string,
     lastname: string,
-    birthday: Date,
+    birthday: string,
     profilePhoto: string,
-    playedClub: IPlayedClub[]
+    playedClubs: [IPlayedClub, ...IPlayedClub[]]
 }
 
 export interface IPlayedClub extends IClub{
-    from: Date,
-    to: Date | null,
+    from: string,
+    to: string | null,
     position: POSITION
 }
 

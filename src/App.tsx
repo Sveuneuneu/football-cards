@@ -1,47 +1,41 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { AppBar, Typography, Box, Container, Grid, Button } from '@mui/material';
 import './App.css';
+import {useSelector, useDispatch} from "react-redux"
+import { IPlayer } from './interfaces/player';
 import { playerAdded } from './store/players';
+import PlayerCard from './components/PlayerCard';
 
 function App() {
 
-  const players = useSelector((state: any) => state.players)
-  const dispatch = useDispatch()
+  const players: IPlayer[] = useSelector((state: any) => state.players)
+  const dispacth = useDispatch()
 
   return (
     <div className="App">
       <header>
+          <AppBar position="relative">
+            <Typography>
+              APP BAR
+            </Typography>
+          </AppBar>
       </header>
       <main>
-        <div>
-          { JSON.stringify(players) }
-        </div>
-        <button onClick={() => dispatch(playerAdded())}>add</button>
-        <div>
-          Nav bar here
-          TODO: logo + login/logout
-        </div>
-        <div>
-          main display here
-          <div>
-            on default
-            <div>
-              Player display here
-              <div>
-                search and filter tools here
-              </div>
-              <div>
-                cards display here
-              </div>
-            </div>
-            on card click
-            <div>
-              Bigger card for update purpose
-            </div>
-          </div>
-        </div>
-        <div>
-          Footer here
-        </div>
+          Main display here
+          <Button
+            onClick={() => dispacth(playerAdded())}>
+            add player
+          </Button>
+          <Box>
+           <Container>
+            <Grid container alignItems="center" spacing={4}>
+              {players.map((player: IPlayer, index) => (
+                <Grid item key={index} sm={12} md={6}>
+                  <PlayerCard player={player} />
+                </Grid>
+              ))}
+            </Grid>
+           </Container>
+          </Box>
       </main>
     </div>
   );
