@@ -1,39 +1,60 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
-import { useSelector } from "react-redux"
-import { FC } from 'react'
-import { IPlayer } from '../interfaces/player'
+import { Card, CardMedia, CardActions, Button, TextField } from "@mui/material";
+import { FC, useState } from "react";
+import { IPlayer } from "../interfaces/player";
+import { useDispatch } from "react-redux";
+import { playerDeleted, playerUpdated } from "../store/players";
+import PlayerCardContent from "./PlayerCardContent";
 
 const PlayerCard: FC<{
-    player: IPlayer
-}> = ({player}) => {
-    console.log(player)
-    return (
-        <Card>
-            <CardMedia 
-                component="img"
-                image={player.profilePhoto}
-                alt={player.firstname}
-                height="450"/>
-            <CardContent>
-                <Typography variant="h5" color="initial">
-                    {`${player.firstname} - ${player.lastname.toLocaleUpperCase()}`}
-                </Typography>
-                <Typography variant="subtitle1" color="initial">
-                    Born: {player.birthday}
-                </Typography>
-                <Typography variant="body1" color="initial">
-                    Position: {player.playedClubs[0].position}
-                </Typography>
-                <ul>
-                    {player.playedClubs.map((playedClub, index) => (
-                        <li key={index}>
-                            { JSON.stringify(playedClub)}
-                        </li>)
-                    )}
-                </ul>
-            </CardContent>
-        </Card>
-    )
-}
+  player: IPlayer;
+}> = ({ player }) => {
+  const dispatch = useDispatch();
+  const [cardPlayer, setCardPlayer] = useState(player);
+  const [isEditing, setIsEditing] = useState(false);
 
-export default PlayerCard
+  const onSaveButtonClick = () => {
+    dispatch(playerUpdated(cardPlayer));
+    setIsEditing(false);
+  };
+
+  return (
+    <Card>
+      <CardActions>
+        <Button onClick={() => dispatch(playerDeleted(cardPlayer))}>
+          Delete
+        </Button>
+        <Button disabled={isEditing} onClick={() => setIsEditing(true)}>
+          Edit
+        </Button>
+        {isEditing ? (
+          <Button onClick={() => onSaveButtonClick()}>Save</Button>
+        ) : null}
+      </CardActions>
+      <CardMedia
+        component="img"
+        image={cardPlayer.profilePhoto}
+        alt={cardPlayer.firstname}
+        height="450"
+      />
+      {isEditing ? (
+        <TextField
+          label="Picture URI"
+          value={cardPlayer.profilePhoto}
+          onChange={(event) => {
+            setCardPlayer({
+              ...cardPlayer,
+              profilePhoto: event.target.value,
+            });
+          }}
+        />
+      ) : null}
+      <PlayerCardContent
+        cardPlayer={cardPlayer}
+        setCardPlayer={setCardPlayer}
+        isEditing={isEditing}
+      />
+    </Card>
+  );
+};
+
+export default PlayerCard;

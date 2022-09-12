@@ -1,16 +1,16 @@
 import { IClub } from "./club"
 
-export interface IPlayer {
+export interface IPlayerCard { }
+
+export interface IPlayer extends IPlayerData {
+    id: string
+}
+
+export interface IPlayerData {
     firstname: string,
     lastname: string,
     birthday: string,
     profilePhoto: string,
-    playedClubs: [IPlayedClub, ...IPlayedClub[]]
-}
-
-export interface IPlayedClub extends IClub{
-    from: string,
-    to: string | null,
     position: POSITION
 }
 
