@@ -1,9 +1,6 @@
 import {
   AppBar,
   Typography,
-  Box,
-  Container,
-  Grid,
   Button,
   ThemeProvider,
   CssBaseline,
@@ -11,15 +8,21 @@ import {
 } from "@mui/material";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
-import { IPlayer } from "./interfaces/player";
-import { playerAdded } from "./store/players";
-import PlayerCard from "./components/PlayerCard";
+import { playersFetched } from "./store/players";
+import PlayersDisplay from "./components/PlayersDisplay";
+import PlayerForm from "./components/PlayerForm";
+import { Container } from "@mui/system";
+import { useEffect } from "react";
 
 function App() {
-  const players: IPlayer[] = useSelector((state: any) => state.players);
+  const players = useSelector((state: any) => state.players)
   const dispacth = useDispatch();
 
   const theme = createTheme();
+
+  const onFetchButtonClick = () => {
+    dispacth(playersFetched())
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -31,19 +34,13 @@ function App() {
           </AppBar>
         </header>
         <main>
-          Main display here
-          <Button onClick={() => dispacth(playerAdded())}>add player</Button>
-          <Box>
-            <Container>
-              <Grid container alignItems="center" spacing={4}>
-                {players.map((player: IPlayer) => (
-                  <Grid item key={player.id} sm={12} md={6}>
-                    <PlayerCard player={player} />
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
-          </Box>
+          <Container>
+            <PlayerForm />
+          </Container>
+          <Container>
+            <Button onClick={() => onFetchButtonClick()}>Fetching data</Button>
+            <PlayersDisplay players={players} />
+          </Container>
         </main>
       </div>
     </ThemeProvider>

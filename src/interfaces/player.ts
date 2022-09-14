@@ -1,12 +1,8 @@
-import { IClub } from "./club"
-
-export interface IPlayerCard { }
-
-export interface IPlayer extends IPlayerData {
+export interface IPlayer extends IPlayerDTO {
     id: string
 }
 
-export interface IPlayerData {
+export interface IPlayerDTO {
     firstname: string,
     lastname: string,
     birthday: string,

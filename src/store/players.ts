@@ -1,25 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IPlayer } from "../interfaces/player";
-import { MOCK_PLAYER_DATA_DIMITRI_PAYET } from "../mocks/player";
+import { MOCK_PLAYER_DATA_DIMITRI_PAYET, MOCK_PLAYER_DATA_SAMUEL_GIGOT } from "../mocks/player";
+import { v4 as uuidv4 } from "uuid"
 
 export const INDEX_NOT_FOUND_ERROR_MESSAGE = 'Cannot find the player index'
 
 export const INITIAL_STATE: IPlayer[] = []
 
+export const INITIAL_FETCH_STATE: IPlayer[] = [
+    {
+        ...MOCK_PLAYER_DATA_DIMITRI_PAYET,
+        id: uuidv4()
+    },
+    {
+        ...MOCK_PLAYER_DATA_SAMUEL_GIGOT,
+        id: uuidv4()
+    },
+]
+
 const playersSlice = createSlice({
     name: "players",
     initialState: INITIAL_STATE,
     reducers: {
-        playerAdded(state) {
+        playersFetched(state) {
+            if (!state.length) {
+                state.push(...INITIAL_FETCH_STATE)
+            }
+        },
+        playerAdded(state, action) {
+            const playerToAdd: IPlayer = {
+                ...action.payload,
+                id: uuidv4() // more 
+            }
 
             // TODO Handle api call here
 
-            state.push({
-                ...MOCK_PLAYER_DATA_DIMITRI_PAYET,
-                // Mock id generation with random because MOCK DATA is equals
-                // Target ==> Hash from data with check on the existing list
-                id: `${Math.floor(Math.random() * 1000000)}`
-            })
+            state.push(playerToAdd)
         },
         playerUpdated(state, action) {
             const playerToUpdate: IPlayer = {
@@ -54,5 +70,5 @@ const findPlayerIndex = (player: IPlayer, playerList: IPlayer[]) => {
     return index
 }
 
-export const { playerAdded, playerUpdated, playerDeleted } = playersSlice.actions
+export const { playersFetched, playerAdded, playerUpdated, playerDeleted } = playersSlice.actions
 export default playersSlice.reducer

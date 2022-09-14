@@ -1,6 +1,6 @@
 import { IPlayer } from '../interfaces/player'
 import { MOCK_PLAYER_DATA_DIMITRI_PAYET, MOCK_PLAYER_DATA_SAMUEL_GIGOT } from '../mocks/player'
-import reducer, { INDEX_NOT_FOUND_ERROR_MESSAGE, INITIAL_STATE, playerAdded, playerDeleted, playerUpdated } from './players'
+import reducer, { INDEX_NOT_FOUND_ERROR_MESSAGE, INITIAL_FETCH_STATE, INITIAL_STATE, playerAdded, playerDeleted, playersFetched, playerUpdated } from './players'
 
 describe('Reducer', () => {
     test('Should return the inital state', () => {
@@ -8,14 +8,23 @@ describe('Reducer', () => {
     })
 })
 
+describe('playersFetched', () => {
+    test('Should fetch data if not already did', () => {
+        expect(reducer(undefined, playersFetched())).toEqual(INITIAL_FETCH_STATE)
+    })
+    test('Should not fetch data if already did', () => {
+        expect(reducer([INITIAL_FETCH_STATE[0]], playersFetched())).toEqual([INITIAL_FETCH_STATE[0]])
+    })
+})
+
 describe('playerAdded', () => {
     test('Should add a player in the list', () => {
-        expect(reducer(undefined, playerAdded())).toEqual([
-            {
-                ...MOCK_PLAYER_DATA_DIMITRI_PAYET,
-                // TODO remove with hashing later
-                id: expect.any(String)
-            }
+        const MOCK_PLAYER_TO_ADD: IPlayer = {
+            ...MOCK_PLAYER_DATA_DIMITRI_PAYET,
+            id: expect.any(String)
+        }
+        expect(reducer(undefined, playerAdded(MOCK_PLAYER_TO_ADD))).toEqual([
+            MOCK_PLAYER_TO_ADD
         ])
     })
     // TODO adding with already existing data

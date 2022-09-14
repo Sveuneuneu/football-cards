@@ -1,9 +1,8 @@
-import { Card, CardMedia, CardActions, Button, TextField } from "@mui/material";
+import { Card, CardMedia, CardActions, Button, TextField, CardContent, Grid } from "@mui/material";
 import { FC, useState } from "react";
 import { IPlayer } from "../interfaces/player";
 import { useDispatch } from "react-redux";
 import { playerDeleted, playerUpdated } from "../store/players";
-import PlayerCardContent from "./PlayerCardContent";
 
 const PlayerCard: FC<{
   player: IPlayer;
@@ -15,6 +14,13 @@ const PlayerCard: FC<{
   const onSaveButtonClick = () => {
     dispatch(playerUpdated(cardPlayer));
     setIsEditing(false);
+  };
+
+  const onAttributeChange = (value: string, attribue: keyof IPlayer) => {
+    setCardPlayer({
+      ...cardPlayer,
+      [attribue]: value,
+    });
   };
 
   return (
@@ -40,19 +46,45 @@ const PlayerCard: FC<{
         <TextField
           label="Picture URI"
           value={cardPlayer.profilePhoto}
-          onChange={(event) => {
-            setCardPlayer({
-              ...cardPlayer,
-              profilePhoto: event.target.value,
-            });
-          }}
+          onChange={(event) =>
+            onAttributeChange(event.target.value, "profilePhoto")
+          }
         />
       ) : null}
-      <PlayerCardContent
-        cardPlayer={cardPlayer}
-        setCardPlayer={setCardPlayer}
-        isEditing={isEditing}
-      />
+    <CardContent>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <TextField
+            label="Firstname"
+            value={cardPlayer.firstname}
+            disabled={!isEditing}
+            onChange={(event) =>
+              onAttributeChange(event.target.value, "firstname")
+            }
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            label="Lastname"
+            value={cardPlayer.lastname}
+            disabled={!isEditing}
+            onChange={(event) =>
+              onAttributeChange(event.target.value, "lastname")
+            }
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            label="Birthday"
+            value={cardPlayer.birthday}
+            disabled={!isEditing}
+            onChange={(event) =>
+              onAttributeChange(event.target.value, "birthday")
+            }
+          />
+        </Grid>
+      </Grid>
+    </CardContent>
     </Card>
   );
 };
